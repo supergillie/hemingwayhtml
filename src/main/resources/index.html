@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Browser</title>
+    <style>
+        body {
+            background-color: black;
+            color: green;
+            font-family: "Courier New", monospace;
+        }
+        .menu {
+            margin: 20px;
+            padding: 10px;
+            border: 2px solid green;
+        }
+        .menu-item {
+            margin: 5px 0;
+        }
+        a {
+            color: green;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        pre {
+            white-space: pre-wrap;       /* CSS3 */
+            white-space: -moz-pre-wrap;  /* Firefox */
+            white-space: -pre-wrap;      /* Opera <7 */
+            white-space: -o-pre-wrap;    /* Opera 7 */
+            word-wrap: break-word;       /* IE */
+        }
+    </style>
+</head>
+<body>
+<div class="menu">
+    <p>Welcome to the Library Browser</p>
+    <p>[1] <a href="#" onclick="loadBook('oldman')">Read 'The Old Man and the Sea'</a></p>
+    <p>[2] <a href="#">Other Option 1</a></p>
+    <p>[3] <a href="#">Other Option 2</a></p>
+    <p>[0] <a href="#">Exit</a></p>
+</div>
+
+<div id="content"></div>
+
+<script>
+        function loadBook(bookId) {
+            let url;
+            if (bookId === 'oldman') {
+                url = 'https://gutenberg.ca/ebooks/hemingwaye-oldmanandthesea/hemingwaye-oldmanandthesea-00-t.txt';
+            } else {
+                document.getElementById('content').innerText = 'Book not found.';
+                return;
+            }
+
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    // You might want to filter the content, for example extracting the relevant part from the page
+                    document.getElementById('content').innerHTML = '<pre>' + data + '</pre>';
+                })
+                .catch(error => {
+                    document.getElementById('content').innerText = 'An error occurred: ' + error;
+                });
+        }
+    </script>
+</body>
+</html>
