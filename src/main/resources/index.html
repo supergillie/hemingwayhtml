@@ -28,10 +28,11 @@
         pre {
             white-space: pre-wrap;       /* CSS3 */
             white-space: -moz-pre-wrap;  /* Firefox */
-            white-space: -pre-wrap;      /* Opera <7 */
+            white-space -pre-wrap;       /* Opera <7 */
             white-space: -o-pre-wrap;    /* Opera 7 */
             word-wrap: break-word;       /* IE */
         }
+
     </style>
 </head>
 <body>
@@ -49,22 +50,23 @@
         function loadBook(bookId) {
             let url;
             if (bookId === 'oldman') {
-                url = 'https://gutenberg.ca/ebooks/hemingwaye-oldmanandthesea/hemingwaye-oldmanandthesea-00-t.txt';
-            } else {
+                // Use an online CORS proxy to access the file
+             url = 'https://api.allorigins.win/get?url=' + encodeURIComponent('https://gutenberg.ca/ebooks/hemingwaye-oldmanandthesea/hemingwaye-oldmanandthesea-00-t.txt');
+         } else {
                 document.getElementById('content').innerText = 'Book not found.';
                 return;
             }
 
-            fetch(url)
-                .then(response => response.text())
-                .then(data => {
-                    // You might want to filter the content, for example extracting the relevant part from the page
-                    document.getElementById('content').innerHTML = '<pre>' + data + '</pre>';
-                })
-                .catch(error => {
-                    document.getElementById('content').innerText = 'An error occurred: ' + error;
-                });
-        }
-    </script>
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('content').innerHTML = '<pre>' + data.contents + '</pre>';
+            })
+            .catch(error => {
+                document.getElementById('content').innerText = 'An error occurred: ' + error;
+            });
+                }
+
+</script>
 </body>
 </html>
